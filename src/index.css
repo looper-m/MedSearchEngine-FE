@@ -5,6 +5,7 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: mintcream !important;
 }
 
 code {
@@ -18,7 +19,7 @@ code {
     justify-content: center;
     align-items: center;
     text-align: center;
-    min-height: 100vh;
+    /*min-height: 100vh;*/
 }
 
 .search-group * {
@@ -28,4 +29,13 @@ code {
 .form-control {
     border-color: lightgray !important;
     box-shadow: none !important;
+}
+
+.logo {
+    max-width: 600px;
+    max-height: 700px;
+}
+
+.title-color-grey {
+    color: slategray;
 }

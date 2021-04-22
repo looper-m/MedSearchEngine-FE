@@ -12,9 +12,9 @@ const App = () => {
     return (
         <Router>
             <LoadingBar
-                color="orange"
+                color="cadetblue"
                 shadow="true"
-                height={3}
+                height={5}
                 waitingTime={500}
                 ref={loadingRef}/>
             <Switch>

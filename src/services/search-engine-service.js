@@ -1,4 +1,4 @@
-const URL = 'http://localhost:4000/';
+const URL = 'http://localhost:4001/';
 
 export const searchQuery = (query, from) =>
     fetch(`${URL}/search?q=${query}&from=${from}`)

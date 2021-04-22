@@ -9,7 +9,8 @@ const Results = ({loadingBar}) => {
     const [paginateParams, setPaginateParams] = useState({
         current: 0,
         hits: 0,
-        totalPages: 0
+        totalPages: 0,
+        time: 0.0
     });
 
     useEffect(() => {
@@ -20,8 +21,12 @@ const Results = ({loadingBar}) => {
                 setPaginateParams(params => ({
                     ...params,
                     hits: response.hits.total.value,
-                    totalPages: Math.ceil(response.hits.total.value / 15)
+                    totalPages: Math.ceil(response.hits.total.value / 15),
+                    time: response.took / 1000
                 }))
+            })
+            .catch(error => {
+                console.log("Error: ", error)
             })
             .finally(() =>
                 loadingBar.current.complete()
@@ -44,28 +49,62 @@ const Results = ({loadingBar}) => {
         }))
     }
 
+    function remove_tags(html) {
+        html = html.replaceAll("<strong>", "||br||");
+        html = html.replaceAll("</strong>", "||/br||");
+        let tmp = document.createElement("DIV");
+        tmp.innerHTML = html;
+        html = tmp.textContent || tmp.innerText;
+        html = html.replaceAll("||br||", "<strong>");
+        return html.replaceAll("||/br||", "</strong>");
+    }
+
     return (
         <div className="container">
             <div className="row py-5">
-                <div className="col-sm-12">
-                    <h1>Results</h1>
+                <div className="col-sm-12 mb-4">
+                    <h1 className="display-4 title-color-grey">Search Results</h1>
+                    {
+                        paginateParams &&
+                        <figcaption className="blockquote-footer">
+                            About {paginateParams.hits} results&nbsp;
+                            <cite title="Source Title">
+                                ({paginateParams.time} seconds)
+                            </cite>
+                        </figcaption>
+                    }
+                    <hr/>
                 </div>
-                <div className="col-sm-12">
-                    {searchResult && console.log("pingu " + searchResult.hits.total.value)}
+                <ul className="col-sm-12"
+                    style={{'list-style-type': 'none'}}>
                     {searchResult && searchResult.hits.hits.map((hit, index) =>
-                        <p key={index}>
+                        <li className="mb-5" key={index}>
                             <Link to={`/document/${hit._id}`}>
-                                {index} : {hit._source['@title']}
+                                {hit._source['@title']}
                             </Link>
-                            {hit._source['@meta-desc']}
-                        </p>
+                            <br/>
+                            {
+                                hit.highlight && Object.keys(hit.highlight).map(key => {
+                                    // return (<>{hit.highlight[key][0]}</>)
+                                    // let stripped = (hit.highlight[key][0]).replace(/<(?!strong\!\/strong\s*\/?)[^>]+>/g, '');
+                                    let stripped = remove_tags(hit.highlight[key][0]) + " ... "
+                                    if (hit.highlight[key].length > 1) {
+                                        stripped += remove_tags(hit.highlight[key][1]) + " ... "
+                                    }
+                                    return (
+                                        <span className="text-secondary"
+                                              dangerouslySetInnerHTML={{__html: stripped}}/>
+                                    )
+                                })
+                            }
+                        </li>
                     )}
-                </div>
+                </ul>
             </div>
             <div className="row">
                 <div className="col-sm-5"/>
                 <div className="col-sm-2 d-flex justify-content-between">
-                    {console.log(paginateParams)}
+                    {/*{console.log(paginateParams)}*/}
                     {
                         Math.floor(paginateParams.current / 15) > 0 &&
                         <i style={{cursor: "pointer"}}

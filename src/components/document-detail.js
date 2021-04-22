@@ -19,7 +19,7 @@ const DocumentDetail = ({loadingBar}) => {
             {
                 document && (
                     <>
-                        <h1 className="display-3 text-secondary"
+                        <h1 className="display-3 title-color-grey"
                             dangerouslySetInnerHTML={{__html: document._source['@title']}}/>
                         {
                             document._source['also-called'] &&
