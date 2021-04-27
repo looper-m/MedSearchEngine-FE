@@ -33,7 +33,10 @@ code {
 
 .logo {
     max-width: 600px;
-    max-height: 700px;
+}
+
+.superdoc-icon {
+    max-width: 80px;
 }
 
 .title-color-grey {

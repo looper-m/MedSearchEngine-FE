@@ -2,6 +2,7 @@ import SearchEngineService from "../services/search-engine-service";
 import {useState, useEffect} from "react";
 import {useParams} from "react-router";
 import {Link} from "react-router-dom";
+import icon from "../superdoc.svg";
 
 const Results = ({loadingBar}) => {
     const {query, page} = useParams();
@@ -63,16 +64,21 @@ const Results = ({loadingBar}) => {
         <div className="container">
             <div className="row py-5">
                 <div className="col-sm-12 mb-4">
-                    <h1 className="display-4 title-color-grey">Search Results</h1>
-                    {
-                        paginateParams &&
-                        <figcaption className="blockquote-footer">
-                            About {paginateParams.hits} results&nbsp;
-                            <cite title="Source Title">
-                                ({paginateParams.time} seconds)
-                            </cite>
-                        </figcaption>
-                    }
+                    <div className="d-flex justify-content-between">
+                        <div>
+                        <h1 className="display-4 title-color-grey">Search Results</h1>
+                        {
+                            paginateParams &&
+                            <figcaption className="blockquote-footer">
+                                About {paginateParams.hits} results&nbsp;
+                                <cite title="Source Title">
+                                    ({paginateParams.time} seconds)
+                                </cite>
+                            </figcaption>
+                        }
+                        </div>
+                        <img className="superdoc-icon" src={icon} alt="icon"/>
+                    </div>
                     <hr/>
                 </div>
                 <ul className="col-sm-12"
